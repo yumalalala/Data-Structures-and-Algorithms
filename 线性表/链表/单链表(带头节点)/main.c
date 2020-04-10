@@ -12,6 +12,16 @@
 
 int main(int argc, const char * argv[])
 {
+    listLink L = NULL;
+    initList(&L);
+    printList(L);
+    int s = 0;
+    
+    s = listInsert(L, 1, 5);
+    printList(L);
+    
+    s = listInsert(L, 3, 15);
+    printList(L);
     
     return 0;
 }
