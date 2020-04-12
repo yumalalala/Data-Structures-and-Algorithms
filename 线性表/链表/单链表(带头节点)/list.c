@@ -72,47 +72,92 @@ int listCount(listLink L)
 // 获取链表第i个元素的内容
 Status getElementByIndex(listLink L, int i, ElemType *e)
 {
-    if(i < 1) return ERROR;
-    
     listLink p = L->next;
     int count = 1;
-    
-    while(p != NULL)
+    while((p != NULL) && (count < i))
     {
-        if(i == count)
-        {
-            *e = p->data;
-            return OK;
-        }
-        p = p->next;
         count += 1;
+        p = p->next;
     }
-    return ERROR;
+    if((p == NULL) || (count > i))
+    {
+        return ERROR;
+    }
+    *e = p->data;
+    return OK;
+}
+
+// 按值查找元素所在位置（只寻找第一个相等元素）
+listLink findLinkByElement(listLink L, ElemType e)
+{
+    listLink p = L->next;
+    while((p != NULL) && (p->data != e))
+    {
+        p = p->next;
+    }
+    return p;
+}
+
+// 按值查找元素所在序号（只寻找第一个相等元素）
+int findIndexByElement(listLink L, ElemType e)
+{
+    listLink p = L->next;
+    int index = 1;
+    while((p != NULL) && (p->data != e))
+    {
+        index += 1;
+        p = p->next;
+    }
+    return (p == NULL) ? 0 : index;
 }
 
 // 在第i个结点前插入值为e的新结点
 Status listInsert(listLink L, int i, ElemType e)
+{
+    listLink p = L;
+    listLink q = NULL;
+    int count = 0;
+    while((p != NULL) && (count < i-1))
+    {
+        count += 1;
+        p = p->next;
+    }
+    if((p == NULL) || (count > i-1))
+    {
+        return ERROR;
+    }
+    q = p->next;
+    p->next = (listLink)malloc(sizeof(node));
+    p->next->data = e;
+    p->next->next = q;
+    return OK;
+}
+
+// 删除第i个结点
+Status listDeleteByIndex(listLink L, int i)
 {
     if(i < 1) return ERROR;
     
     listLink p = L;
     listLink q = NULL;
     int count = 0;
-    
-    while(p != NULL)
+    while((p != NULL))
     {
         if(count == (i-1))
         {
             q = p->next;
-            p->next = (listLink)malloc(sizeof(node));
-            p->next->data = e;
-            p->next->next = q;
-            return OK;
+            if(q == NULL)
+            {
+                
+            }
+            p->next = q->next;
+            free(q);
         }
         count += 1;
         p = p->next;
     }
-    return ERROR;
+    
+    return OK;
 }
 
 // 打印链表的每一个结点

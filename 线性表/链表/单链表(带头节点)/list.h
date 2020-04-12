@@ -36,10 +36,14 @@ Status clearList(listLink L);
 int listCount(listLink L);
 // 获取链表第i个元素的内容
 Status getElementByIndex(listLink L, int i, ElemType *e);
-
+// 按值查找元素所在位置（只寻找第一个相等元素）
+listLink findLinkByElement(listLink L, ElemType e);
+// 按值查找元素所在序号（只寻找第一个相等元素）
+int findIndexByElement(listLink L, ElemType e);
 // 在第i个结点前插入值为e的新结点
 Status listInsert(listLink L, int i, ElemType e);
-
+// 删除第i个结点
+Status listDeleteByIndex(listLink L, int i);
 // 打印链表的每一个结点
 void printList(listLink L);
 
