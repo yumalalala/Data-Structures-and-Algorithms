@@ -31,8 +31,8 @@ int listEmpty(listLink L)
 // 单链表的销毁
 Status destroyList(listLink L)
 {
-    listLink p = L;
-    listLink q = NULL;
+    node *p = L;
+    node *q = NULL;
     while(p != NULL)
     {
         q = p->next;
@@ -45,8 +45,8 @@ Status destroyList(listLink L)
 // 清空单链表
 Status clearList(listLink L)
 {
-    listLink p = L->next;
-    listLink q = NULL;
+    node *p = L->next;
+    node *q = NULL;
     while(p != NULL)
     {
         q = p->next;
@@ -57,10 +57,10 @@ Status clearList(listLink L)
 }
 
 // 链表表长
-int listj(listLink L)
+int listCount(listLink L)
 {
     int i = 0;
-    listLink p = L->next;
+    node *p = L->next;
     while(p != NULL)
     {
         i += 1;
@@ -69,10 +69,22 @@ int listj(listLink L)
     return i;
 }
 
+// 打印链表的每一个结点
+void printList(listLink L)
+{
+    node* p = L->next;
+    while (p != NULL)
+    {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n");
+}
+
 // 获取链表第i个元素的内容
 Status getElementByIndex(listLink L, int i, ElemType *e)
 {
-    listLink p = L->next;
+    node *p = L->next;
     int j = 1;
     while((p != NULL) && (j < i))
     {
@@ -88,9 +100,9 @@ Status getElementByIndex(listLink L, int i, ElemType *e)
 }
 
 // 按值查找元素所在位置（只寻找第一个相等元素）
-listLink findLinkByElement(listLink L, ElemType e)
+node* findLinkByElement(listLink L, ElemType e)
 {
-    listLink p = L->next;
+    node *p = L->next;
     while((p != NULL) && (p->data != e))
     {
         p = p->next;
@@ -101,7 +113,7 @@ listLink findLinkByElement(listLink L, ElemType e)
 // 按值查找元素所在序号（只寻找第一个相等元素）
 int findIndexByElement(listLink L, ElemType e)
 {
-    listLink p = L->next;
+    node *p = L->next;
     int i = 1;
     while((p != NULL) && (p->data != e))
     {
@@ -114,8 +126,8 @@ int findIndexByElement(listLink L, ElemType e)
 // 在第i个结点前插入值为e的新结点
 Status listInsert(listLink L, int i, ElemType e)
 {
-    listLink p = L;
-    listLink q = NULL;
+    node *p = L;
+    node *q = NULL;
     int j = 0;
     while((p != NULL) && (j < i-1))
     {
@@ -127,7 +139,7 @@ Status listInsert(listLink L, int i, ElemType e)
         return ERROR;
     }
     q = p->next;
-    p->next = (listLink)malloc(sizeof(node));
+    p->next = (node*)malloc(sizeof(node));
     p->next->data = e;
     p->next->next = q;
     return OK;
@@ -136,8 +148,8 @@ Status listInsert(listLink L, int i, ElemType e)
 // 删除第i个结点，并保存该结点数据域的值
 Status listDeleteByIndex(listLink L, int i, ElemType *e)
 {
-    listLink p = L;
-    listLink q = NULL;
+    node *p = L;
+    node *q = NULL;
     int j = 0;
     while((p->next != NULL) && (j < i-1))
     {
@@ -149,20 +161,54 @@ Status listDeleteByIndex(listLink L, int i, ElemType *e)
         return ERROR;
     }
     q = p->next;
-    p->next = p->next->next;
+    p->next = q->next;
     *e = q->data;
     free(q);
     return OK;
 }
 
-// 打印链表的每一个结点
-void printList(listLink L)
+// 建立单链表（头插法）
+void createListH(listLink *L, int n)
 {
-    listLink p = L->next;
-    while(p != NULL)
+    *L = (listLink)malloc(sizeof(node));
+    (*L)->next = NULL;
+
+    int i = 0;
+    node *p = NULL;
+    for (i = n; i > 0; i -= 1)
     {
-        printf("%d ", p->data);
-        p = p->next;
+        p = (node*)malloc(sizeof(node));
+#ifdef _WIN32
+        scanf_s("%d", &(p->data));
+#endif
+#ifdef __APPLE__
+        scanf("%d", &(p->data));
+#endif
+        p->next = (*L)->next;
+        (*L)->next = p;
     }
-    printf("\n");
+}
+
+// 建立单链表（尾插法）
+void createListR(listLink* L, int n)
+{
+    *L = (listLink)malloc(sizeof(node));
+    (*L)->next = NULL;
+
+    int i = 0;
+    node *r = (*L);
+    node *p = NULL;
+    for (i = 0; i < n; i += 1)
+    {
+        p = (node*)malloc(sizeof(node));
+#ifdef _WIN32
+        scanf_s("%d", &(p->data));
+#endif
+#ifdef __APPLE__
+        scanf("%d", &(p->data));
+#endif
+        p->next = NULL;
+        r->next = p;
+        r = p;
+    }
 }
