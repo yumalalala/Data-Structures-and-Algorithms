@@ -57,29 +57,29 @@ Status clearList(listLink L)
 }
 
 // 链表表长
-int listCount(listLink L)
+int listj(listLink L)
 {
-    int count = 0;
+    int i = 0;
     listLink p = L->next;
     while(p != NULL)
     {
-        count += 1;
+        i += 1;
         p = p->next;
     }
-    return count;
+    return i;
 }
 
 // 获取链表第i个元素的内容
 Status getElementByIndex(listLink L, int i, ElemType *e)
 {
     listLink p = L->next;
-    int count = 1;
-    while((p != NULL) && (count < i))
+    int j = 1;
+    while((p != NULL) && (j < i))
     {
-        count += 1;
+        j += 1;
         p = p->next;
     }
-    if((p == NULL) || (count > i))
+    if((p == NULL) || (j > i))
     {
         return ERROR;
     }
@@ -102,13 +102,13 @@ listLink findLinkByElement(listLink L, ElemType e)
 int findIndexByElement(listLink L, ElemType e)
 {
     listLink p = L->next;
-    int index = 1;
+    int i = 1;
     while((p != NULL) && (p->data != e))
     {
-        index += 1;
+        i += 1;
         p = p->next;
     }
-    return (p == NULL) ? 0 : index;
+    return (p == NULL) ? 0 : i;
 }
 
 // 在第i个结点前插入值为e的新结点
@@ -116,13 +116,13 @@ Status listInsert(listLink L, int i, ElemType e)
 {
     listLink p = L;
     listLink q = NULL;
-    int count = 0;
-    while((p != NULL) && (count < i-1))
+    int j = 0;
+    while((p != NULL) && (j < i-1))
     {
-        count += 1;
+        j += 1;
         p = p->next;
     }
-    if((p == NULL) || (count > i-1))
+    if((p == NULL) || (j > i-1))
     {
         return ERROR;
     }
@@ -133,30 +133,25 @@ Status listInsert(listLink L, int i, ElemType e)
     return OK;
 }
 
-// 删除第i个结点
-Status listDeleteByIndex(listLink L, int i)
+// 删除第i个结点，并保存该结点数据域的值
+Status listDeleteByIndex(listLink L, int i, ElemType *e)
 {
-    if(i < 1) return ERROR;
-    
     listLink p = L;
     listLink q = NULL;
-    int count = 0;
-    while((p != NULL))
+    int j = 0;
+    while((p->next != NULL) && (j < i-1))
     {
-        if(count == (i-1))
-        {
-            q = p->next;
-            if(q == NULL)
-            {
-                
-            }
-            p->next = q->next;
-            free(q);
-        }
-        count += 1;
+        j += 1;
         p = p->next;
     }
-    
+    if((p->next == NULL) || (j > i-1))
+    {
+        return ERROR;
+    }
+    q = p->next;
+    p->next = p->next->next;
+    *e = q->data;
+    free(q);
     return OK;
 }
 

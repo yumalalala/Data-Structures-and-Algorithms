@@ -42,8 +42,8 @@ listLink findLinkByElement(listLink L, ElemType e);
 int findIndexByElement(listLink L, ElemType e);
 // 在第i个结点前插入值为e的新结点
 Status listInsert(listLink L, int i, ElemType e);
-// 删除第i个结点
-Status listDeleteByIndex(listLink L, int i);
+// 删除第i个结点，并保存该结点数据域的值
+Status listDeleteByIndex(listLink L, int i, ElemType *e);
 // 打印链表的每一个结点
 void printList(listLink L);
 
